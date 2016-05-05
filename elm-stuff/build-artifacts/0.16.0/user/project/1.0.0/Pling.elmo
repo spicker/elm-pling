@@ -1,0 +1,86 @@
+Elm.Pling = Elm.Pling || {};
+Elm.Pling.make = function (_elm) {
+   "use strict";
+   _elm.Pling = _elm.Pling || {};
+   if (_elm.Pling.values) return _elm.Pling.values;
+   var _U = Elm.Native.Utils.make(_elm),
+   $Basics = Elm.Basics.make(_elm),
+   $Debug = Elm.Debug.make(_elm),
+   $Html = Elm.Html.make(_elm),
+   $Html$Attributes = Elm.Html.Attributes.make(_elm),
+   $Html$Events = Elm.Html.Events.make(_elm),
+   $List = Elm.List.make(_elm),
+   $Matrix = Elm.Matrix.make(_elm),
+   $Maybe = Elm.Maybe.make(_elm),
+   $Result = Elm.Result.make(_elm),
+   $Signal = Elm.Signal.make(_elm);
+   var _op = {};
+   var positionList = F2(function (x,y) {    return A2($List.map,F2(function (v0,v1) {    return {ctor: "_Tuple2",_0: v0,_1: v1};})(x),_U.range(0,y));});
+   var buttonStyle = function (b) {
+      var _p0 = b;
+      if (_p0 === true) {
+            return $Html$Attributes.style(_U.list([{ctor: "_Tuple2",_0: "color",_1: "blue"}]));
+         } else {
+            return $Html$Attributes.style(_U.list([{ctor: "_Tuple2",_0: "color",_1: "red"}]));
+         }
+   };
+   var toggle = F2(function (pos,model) {
+      var _p1 = A2($Matrix.get,pos,model);
+      if (_p1.ctor === "Just") {
+            if (_p1._0 === true) {
+                  return A3($Matrix.set,pos,false,model);
+               } else {
+                  return A3($Matrix.set,pos,true,model);
+               }
+         } else {
+            return A3($Matrix.set,pos,false,model);
+         }
+   });
+   var Click = function (a) {    return {ctor: "Click",_0: a};};
+   var view = F2(function (address,model) {
+      var buttonList = F2(function (x,y) {
+         return A2($Html.span,
+         _U.list([]),
+         A2($List.map,
+         function (xy) {
+            return A2($Html.button,
+            _U.list([buttonStyle(A2($Maybe.withDefault,false,A2($Matrix.get,xy,model))),A2($Html$Events.onClick,address,Click(xy))]),
+            _U.list([$Html.text("b")]));
+         },
+         A2(positionList,x,y)));
+      });
+      return A2($Html.div,
+      _U.list([]),
+      _U.list([A2(buttonList,0,7)
+              ,A2($Html.div,
+              _U.list([]),
+              _U.list([A2(buttonList,1,7)
+                      ,A2($Html.div,
+                      _U.list([]),
+                      _U.list([A2(buttonList,2,7)
+                              ,A2($Html.div,
+                              _U.list([]),
+                              _U.list([A2(buttonList,3,7)
+                                      ,A2($Html.div,
+                                      _U.list([]),
+                                      _U.list([A2(buttonList,4,7)
+                                              ,A2($Html.div,
+                                              _U.list([]),
+                                              _U.list([A2(buttonList,5,7)
+                                                      ,A2($Html.div,
+                                                      _U.list([]),
+                                                      _U.list([A2(buttonList,6,7),A2($Html.div,_U.list([]),_U.list([A2(buttonList,7,7)]))]))]))]))]))]))]))]));
+   });
+   var Reset = {ctor: "Reset"};
+   var init = A2($Matrix.repeat,{ctor: "_Tuple2",_0: 8,_1: 8},false);
+   var update = F2(function (action,model) {    var _p2 = action;if (_p2.ctor === "Click") {    return A2(toggle,_p2._0,model);} else {    return init;}});
+   return _elm.Pling.values = {_op: _op
+                              ,init: init
+                              ,Reset: Reset
+                              ,Click: Click
+                              ,update: update
+                              ,toggle: toggle
+                              ,view: view
+                              ,buttonStyle: buttonStyle
+                              ,positionList: positionList};
+};

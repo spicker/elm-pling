@@ -35,32 +35,16 @@ view : Signal.Address Action -> Model -> Html
 view address model =
     let 
         buttonList : Int -> Int -> Html 
-        buttonList x y = span [] (List.map (\xy -> button [ buttonStyle (Maybe.withDefault False (get xy model)), onClick address (Click xy) ] [text "b"]) (positionList x y))
+        buttonList x y = span [] 
+            <| List.map 
+                (\xy -> button [ buttonStyle (Maybe.withDefault False (get xy model)), onClick address (Click xy) ] [text "b"])
+                (positionList x y)
+        
+        buttonGrid : (Int,Int) -> Html 
+        buttonGrid (x,y) = List.map (\a -> div [] [buttonList a x]) [0..y]
+                        |> ul []
     in
-        div []
-            [ buttonList 0 7
-            ,
-        div []
-            [ buttonList 1 7
-            ,
-        div []
-            [ buttonList 2 7
-            ,
-        div []
-            [ buttonList 3 7
-            ,
-        div []
-            [ buttonList 4 7
-            ,
-        div []
-            [ buttonList 5 7
-            ,
-        div []
-            [ buttonList 6 7
-            ,
-        div []
-            [ buttonList 7 7
-            ]]]]]]]]
+        buttonGrid (7,7)
     
         
 buttonStyle : Bool -> Html.Attribute

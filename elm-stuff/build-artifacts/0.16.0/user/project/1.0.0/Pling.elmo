@@ -49,31 +49,17 @@ Elm.Pling.make = function (_elm) {
          },
          A2(positionList,x,y)));
       });
-      return A2($Html.div,
-      _U.list([]),
-      _U.list([A2(buttonList,0,7)
-              ,A2($Html.div,
-              _U.list([]),
-              _U.list([A2(buttonList,1,7)
-                      ,A2($Html.div,
-                      _U.list([]),
-                      _U.list([A2(buttonList,2,7)
-                              ,A2($Html.div,
-                              _U.list([]),
-                              _U.list([A2(buttonList,3,7)
-                                      ,A2($Html.div,
-                                      _U.list([]),
-                                      _U.list([A2(buttonList,4,7)
-                                              ,A2($Html.div,
-                                              _U.list([]),
-                                              _U.list([A2(buttonList,5,7)
-                                                      ,A2($Html.div,
-                                                      _U.list([]),
-                                                      _U.list([A2(buttonList,6,7),A2($Html.div,_U.list([]),_U.list([A2(buttonList,7,7)]))]))]))]))]))]))]))]));
+      var buttonGrid = function (_p2) {
+         var _p3 = _p2;
+         return A2($Html.ul,
+         _U.list([]),
+         A2($List.map,function (a) {    return A2($Html.div,_U.list([]),_U.list([A2(buttonList,a,_p3._0)]));},_U.range(0,_p3._1)));
+      };
+      return buttonGrid({ctor: "_Tuple2",_0: 7,_1: 7});
    });
    var Reset = {ctor: "Reset"};
    var init = A2($Matrix.repeat,{ctor: "_Tuple2",_0: 8,_1: 8},false);
-   var update = F2(function (action,model) {    var _p2 = action;if (_p2.ctor === "Click") {    return A2(toggle,_p2._0,model);} else {    return init;}});
+   var update = F2(function (action,model) {    var _p4 = action;if (_p4.ctor === "Click") {    return A2(toggle,_p4._0,model);} else {    return init;}});
    return _elm.Pling.values = {_op: _op
                               ,init: init
                               ,Reset: Reset

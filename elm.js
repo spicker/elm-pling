@@ -10395,7 +10395,8 @@ Elm.Pling.make = function (_elm) {
    $Matrix = Elm.Matrix.make(_elm),
    $Maybe = Elm.Maybe.make(_elm),
    $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm);
+   $Signal = Elm.Signal.make(_elm),
+   $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
    var _op = {};
    var positionList = F2(function (x,y) {    return A2($List.map,F2(function (v0,v1) {    return {ctor: "_Tuple2",_0: v0,_1: v1};})(x),_U.range(0,y));});
    var buttonStyle = function (b) {
@@ -10442,7 +10443,9 @@ Elm.Pling.make = function (_elm) {
    var Reset = {ctor: "Reset"};
    var init = A2($Matrix.repeat,{ctor: "_Tuple2",_0: 8,_1: 8},false);
    var update = F2(function (action,model) {    var _p4 = action;if (_p4.ctor === "Click") {    return A2(toggle,_p4._0,model);} else {    return init;}});
+   var main = $StartApp$Simple.start({model: init,update: update,view: view});
    return _elm.Pling.values = {_op: _op
+                              ,main: main
                               ,init: init
                               ,Reset: Reset
                               ,Click: Click
@@ -10451,22 +10454,4 @@ Elm.Pling.make = function (_elm) {
                               ,view: view
                               ,buttonStyle: buttonStyle
                               ,positionList: positionList};
-};
-Elm.Main = Elm.Main || {};
-Elm.Main.make = function (_elm) {
-   "use strict";
-   _elm.Main = _elm.Main || {};
-   if (_elm.Main.values) return _elm.Main.values;
-   var _U = Elm.Native.Utils.make(_elm),
-   $Basics = Elm.Basics.make(_elm),
-   $Debug = Elm.Debug.make(_elm),
-   $List = Elm.List.make(_elm),
-   $Maybe = Elm.Maybe.make(_elm),
-   $Pling = Elm.Pling.make(_elm),
-   $Result = Elm.Result.make(_elm),
-   $Signal = Elm.Signal.make(_elm),
-   $StartApp$Simple = Elm.StartApp.Simple.make(_elm);
-   var _op = {};
-   var main = $StartApp$Simple.start({model: $Pling.init,update: $Pling.update,view: $Pling.view});
-   return _elm.Main.values = {_op: _op,main: main};
 };

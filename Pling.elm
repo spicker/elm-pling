@@ -4,7 +4,10 @@ import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import Matrix exposing (..)
+import StartApp.Simple exposing (..)
 
+
+main = StartApp.Simple.start {model = init, update = update, view = view}
 
 --MODEL
 type alias Model = Matrix Bool

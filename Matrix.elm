@@ -1,4 +1,4 @@
-module Matrix where
+module Matrix exposing (..)
 
 import Array exposing(Array)
 

@@ -1,84 +1,91 @@
-module Pling where
-
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
+import Html.App exposing (..)
 import Matrix exposing (..)
-import StartApp.Simple exposing (..)
+import Time exposing (Time, minute)
 
 
 main = 
-    StartApp.Simple.start {model = init, update = update, view = view}
+    Html.App.program {init = init, update = update, view = view, subscriptions = \_ -> Sub.none }
 
 
 --MODEL
-type alias Model = 
-    Matrix Bool
+type alias Model =
+    { matrix : Matrix Bool
+    , tones : List Tone
+    , bpm : Time }
 
 
-init : Model
-init = repeat (8,8) False
+type alias Tone = 
+    String
+
+
+init : (Model, Cmd Msg)
+init = 
+    (   { matrix = repeat (8,8) False
+        , tones = []
+        , bpm = minute * 100 
+        }
+    , Cmd.none )
 
 
 --UPDATE
-type Action = 
+type Msg = 
     Reset
     | Click Position
     
     
-update : Action -> Model -> Model
-update action model =
-    case action of
+update : Msg -> Model -> (Model, Cmd Msg)
+update msg model =
+    case msg of
         Click position -> 
-            toggle position model
+            ( { model | matrix = toggle position model.matrix }
+            , Cmd.none)
             
         Reset -> 
             init
             
 
-toggle : Position -> Model -> Model
-toggle pos model =
-    case get pos model of 
+toggle : Position -> Matrix Bool -> Matrix Bool
+toggle pos matrix =
+    case get pos matrix of 
         Just True -> 
-            set pos False model
+            set pos False matrix
             
         Just False -> 
-            set pos True model
+            set pos True matrix
             
         Nothing -> 
-            set pos False model
+            set pos False matrix
             
 
 --VIEW
-view : Signal.Address Action -> Model -> Html
-view address model =
+view : Model -> Html Msg
+view  { matrix, tones } =
     let 
-        buttonList : Int -> Int -> Html 
+        buttonList : Int -> Int -> Html Msg
         buttonList x y = 
             List.map
-            (\xy -> button [ buttonStyle (Maybe.withDefault False (get xy model)), onClick address (Click xy) ] [text "b"])
-            (positionList x y)
+            (\xy -> button [ buttonStyle (Maybe.withDefault False (get xy matrix)), onClick (Click xy) ] [text "b"])
+            (List.map ((,) x) [0..y])
             |> span []
 
         
-        buttonGrid : (Int,Int) -> Html 
+        buttonGrid : (Int,Int) -> Html Msg
         buttonGrid (x,y) = 
             List.map (\a -> div [] [buttonList a x]) [0..y]
             |> ul []
 
     in
         buttonGrid (7,7)
-    
-        
-buttonStyle : Bool -> Html.Attribute
+
+
+buttonStyle : Bool -> Html.Attribute Msg
 buttonStyle b = 
     case b of 
         True -> 
             style [ ("color", "blue") ]
         False -> 
             style [ ("color", "red") ]
-            
 
-positionList : Int -> Int -> List Position
-positionList x y = 
-    List.map ((,) x) [0..y]

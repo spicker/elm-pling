@@ -22,18 +22,18 @@ function loadBuffers() {
     bufferLoader = new BufferLoader(
         context,
         [
-            'res/guitar/d5.ogg',
-            'res/guitar/a4.ogg',
-            'res/guitar/e4.ogg',
-            'res/guitar/b3.ogg',
-            'res/guitar/g3.ogg',
-            'res/guitar/d3.ogg',
-            'res/guitar/a2.ogg',
-            'res/guitar/e2.ogg'
+            'res/guitar/d5.mp3',
+            'res/guitar/a4.mp3',
+            'res/guitar/e4.mp3',
+            'res/guitar/b3.mp3',
+            'res/guitar/g3.mp3',
+            'res/guitar/d3.mp3',
+            'res/guitar/a2.mp3',
+            'res/guitar/e2.mp3'
         ],
-        finishedLoading(function (bufferList) {
+        function (bufferList) {
             buffers = bufferList;
-        })
+        }
     );
 
     bufferLoader.load();

@@ -7910,6 +7910,7 @@ var _user$project$Pling$view = function (model) {
 							_elm_lang$html$Html$button,
 							_elm_lang$core$Native_List.fromArray(
 								[
+									_elm_lang$html$Html_Attributes$class('.btn'),
 									_user$project$Pling$buttonStyle(
 									A2(
 										_elm_lang$core$Maybe$withDefault,

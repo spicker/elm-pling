@@ -94,7 +94,7 @@ view model =
         buttonList : Int -> Int -> Html Msg
         buttonList x y = 
             List.map
-            (\xy -> button [ buttonStyle (Maybe.withDefault False (get xy model.matrix)), onClick (Click xy) ] [text "b"])
+            (\xy -> button [ class ".btn", buttonStyle (Maybe.withDefault False (get xy model.matrix)), onClick (Click xy) ] [text "b"])
             (List.map ((,) x) [0..y])
             |> span []
 

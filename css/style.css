@@ -23,10 +23,10 @@ button.btn-active {
     border: solid #a1dbff 3px;
 }
 
-button.btn-play {
-    /*background: #a1dbff;*/
-    /*border: solid #a1dbff 3px;*/
-}
+/*button.btn-play {
+    background: #a1dbff;
+    border: solid #a1dbff 3px;
+}*/
 
 button.btn-play.btn-active{
     border: solid #fff894 3px;

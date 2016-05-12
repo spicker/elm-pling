@@ -1,18 +1,33 @@
-.btn {
-  -webkit-border-radius: 13;
-  -moz-border-radius: 13;
-  border-radius: 13px;
-  -webkit-box-shadow: 0px 0px 10px #666666;
-  -moz-box-shadow: 0px 0px 10px #666666;
-  box-shadow: 0px 0px 10px #666666;
-  font-size: 20px;
-  background: #3091d1;
-  padding: 10px 20px 10px 20px;
-  border: solid #1f628d 3px;
-  text-decoration: none;
+button.btn {
+    -webkit-border-radius: 13;
+    -moz-border-radius: 13;
+    border-radius: 13px;
+    -webkit-box-shadow: 0px 0px 5px #666666;
+    -moz-box-shadow: 0px 0px 5px #666666;
+    box-shadow: 0px 0px 5px #666666;
+    font-size: 20px;
+    background: #3a87fd;
+    padding: 20px 20px 20px 20px;
+    border: solid #1f628d 3px;
+    text-decoration: none;
+    margin: 0.5px;
 }
 
-.btn:hover {
-  background: #d1edff;
-  text-decoration: none;
+button.btn:hover {
+    background: #a1dbff;
+    text-decoration: none;
+}
+
+button.btn-active {
+    background: #d1edff;
+    border: solid #a1dbff 3px;
+}
+
+button.btn-play {
+    /*background: #a1dbff;*/
+    /*border: solid #a1dbff 3px;*/
+}
+
+button.btn-play.btn-active{
+    border: solid #fff894 3px;
 }

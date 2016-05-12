@@ -8,6 +8,7 @@ import Matrix exposing (..)
 import Time exposing (Time, minute, every, second)
 import List
 import Json.Encode as Json exposing (..)
+import Platform.Sub exposing (batch)
 
 port playNotes : String -> Cmd msg 
 
@@ -23,7 +24,8 @@ main =
 --MODEL
 type alias Model =
     { matrix : Matrix Bool
-    , bpm : Time }
+    , bpm : Time 
+    , currentButtons : Int}
 
 
 type alias Tone = Int
@@ -34,7 +36,8 @@ init =
     let 
         model = 
             { matrix = repeat (8,8) False 
-            , bpm = 180 }
+            , bpm = 180 
+            , currentButtons = 0}
     in  
         ( model
         , Cmd.none )
@@ -44,7 +47,8 @@ init =
 type Msg = 
     Reset
     | Click Position
-    | Update Time
+    | UpdatePlay Time
+    | UpdateButton Time
     
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -54,16 +58,24 @@ update msg model =
             ( { model | matrix = toggle position model.matrix }
             , Cmd.none )
             
-        Update time ->
+        UpdatePlay time ->
             ( model
-            , play model.matrix ((60/model.bpm)) |> playNotes)
+            , play model.matrix ( 60/model.bpm ) |> playNotes )
+            
+        UpdateButton time ->
+            ( { model | currentButtons = nextButton model.currentButtons }
+            , Cmd.none )
             
         Reset -> 
             init
 
 
+nextButton : Int -> Int
+nextButton x = if x < 7 then x + 1 else 0
+
+
 play : Matrix Bool -> Time -> String
-play matrix interval =
+play matrix interval = 
     toPositionList matrix
     |> List.filter (\(pos,b) -> b == True)
     |> List.map fst 
@@ -71,7 +83,7 @@ play matrix interval =
     |> List.map ( \(a,b) -> Json.object [("tone", int a), ("time", float b)] )
     |> Json.list
     |> Json.encode 0
-     
+        
     
 
 toggle : Position -> Matrix Bool -> Matrix Bool
@@ -94,34 +106,29 @@ view model =
         buttonList : Int -> Int -> Html Msg
         buttonList x y = 
             List.map
-            (\xy -> button [ class ".btn", buttonStyle (Maybe.withDefault False (get xy model.matrix)), onClick (Click xy) ] [text "b"])
-            (List.map ((,) x) [0..y])
-            |> span []
+                (\(a,b) -> button  
+                    [ classList [
+                        ("btn", True),
+                        ("btn-active", Maybe.withDefault False ( get (a,b) model.matrix )),
+                        ("btn-play", model.currentButtons == b) ]
+                    , onClick (Click (a,b)) ] [])
+                (List.map ((,) y) [0..x])
+                |> span []
 
         
         buttonGrid : (Int,Int) -> Html Msg
         buttonGrid (x,y) = 
-            List.map (\a -> div [] [buttonList a x]) [0..y]
+            List.map (\a -> div [] [buttonList x a]) [0..y]
             |> ul []
 
     in
         buttonGrid (7,7)
 
 
-buttonStyle : Bool -> Html.Attribute Msg
-buttonStyle b = 
-    case b of 
-        True -> 
-            style 
-                [ ("background-color", "blue") 
-                , ("font-size", "24px")]
-        False -> 
-            style 
-                [ ("background-color", "red") 
-                , ("font-size", "24px")]
-
-
 --SUBSCRIPTIONS
 subscriptions : Model -> Sub Msg
 subscriptions model = 
-    every ((minute/model.bpm)*8) Update 
+    Platform.Sub.batch 
+        [ every ((minute/model.bpm)*8) UpdatePlay 
+        , every (minute/model.bpm) UpdateButton ]
+    

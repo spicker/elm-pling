@@ -7766,29 +7766,11 @@ var _user$project$Matrix$t2 = A2(
 	true);
 var _user$project$Matrix$empty = _elm_lang$core$Array$empty;
 
-var _user$project$Pling$buttonStyle = function (b) {
-	var _p0 = b;
-	if (_p0 === true) {
-		return _elm_lang$html$Html_Attributes$style(
-			_elm_lang$core$Native_List.fromArray(
-				[
-					{ctor: '_Tuple2', _0: 'background-color', _1: 'blue'},
-					{ctor: '_Tuple2', _0: 'font-size', _1: '24px'}
-				]));
-	} else {
-		return _elm_lang$html$Html_Attributes$style(
-			_elm_lang$core$Native_List.fromArray(
-				[
-					{ctor: '_Tuple2', _0: 'background-color', _1: 'red'},
-					{ctor: '_Tuple2', _0: 'font-size', _1: '24px'}
-				]));
-	}
-};
 var _user$project$Pling$toggle = F2(
 	function (pos, matrix) {
-		var _p1 = A2(_user$project$Matrix$get, pos, matrix);
-		if (_p1.ctor === 'Just') {
-			if (_p1._0 === true) {
+		var _p0 = A2(_user$project$Matrix$get, pos, matrix);
+		if (_p0.ctor === 'Just') {
+			if (_p0._0 === true) {
 				return A3(_user$project$Matrix$set, pos, false, matrix);
 			} else {
 				return A3(_user$project$Matrix$set, pos, true, matrix);
@@ -7805,31 +7787,31 @@ var _user$project$Pling$play = F2(
 			_elm_lang$core$Json_Encode$list(
 				A2(
 					_elm_lang$core$List$map,
-					function (_p2) {
-						var _p3 = _p2;
+					function (_p1) {
+						var _p2 = _p1;
 						return _elm_lang$core$Json_Encode$object(
 							_elm_lang$core$Native_List.fromArray(
 								[
 									{
 									ctor: '_Tuple2',
 									_0: 'tone',
-									_1: _elm_lang$core$Json_Encode$int(_p3._0)
+									_1: _elm_lang$core$Json_Encode$int(_p2._0)
 								},
 									{
 									ctor: '_Tuple2',
 									_0: 'time',
-									_1: _elm_lang$core$Json_Encode$float(_p3._1)
+									_1: _elm_lang$core$Json_Encode$float(_p2._1)
 								}
 								]));
 					},
 					A2(
 						_elm_lang$core$List$map,
-						function (_p4) {
-							var _p5 = _p4;
+						function (_p3) {
+							var _p4 = _p3;
 							return {
 								ctor: '_Tuple2',
-								_0: _p5._0,
-								_1: _elm_lang$core$Basics$toFloat(_p5._1) * interval
+								_0: _p4._0,
+								_1: _elm_lang$core$Basics$toFloat(_p4._1) * interval
 							};
 						},
 						A2(
@@ -7837,19 +7819,23 @@ var _user$project$Pling$play = F2(
 							_elm_lang$core$Basics$fst,
 							A2(
 								_elm_lang$core$List$filter,
-								function (_p6) {
-									var _p7 = _p6;
-									return _elm_lang$core$Native_Utils.eq(_p7._1, true);
+								function (_p5) {
+									var _p6 = _p5;
+									return _elm_lang$core$Native_Utils.eq(_p6._1, true);
 								},
 								_user$project$Matrix$toPositionList(matrix)))))));
 	});
+var _user$project$Pling$nextButton = function (x) {
+	return (_elm_lang$core$Native_Utils.cmp(x, 7) < 0) ? (x + 1) : 0;
+};
 var _user$project$Pling$init = function () {
 	var model = {
 		matrix: A2(
 			_user$project$Matrix$repeat,
 			{ctor: '_Tuple2', _0: 8, _1: 8},
 			false),
-		bpm: 180
+		bpm: 180,
+		currentButtons: 0
 	};
 	return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 }();
@@ -7860,38 +7846,56 @@ var _user$project$Pling$playNotes = _elm_lang$core$Native_Platform.outgoingPort(
 	});
 var _user$project$Pling$update = F2(
 	function (msg, model) {
-		var _p8 = msg;
-		switch (_p8.ctor) {
+		var _p7 = msg;
+		switch (_p7.ctor) {
 			case 'Click':
 				return {
 					ctor: '_Tuple2',
 					_0: _elm_lang$core$Native_Utils.update(
 						model,
 						{
-							matrix: A2(_user$project$Pling$toggle, _p8._0, model.matrix)
+							matrix: A2(_user$project$Pling$toggle, _p7._0, model.matrix)
 						}),
 					_1: _elm_lang$core$Platform_Cmd$none
 				};
-			case 'Update':
+			case 'UpdatePlay':
 				return {
 					ctor: '_Tuple2',
 					_0: model,
 					_1: _user$project$Pling$playNotes(
 						A2(_user$project$Pling$play, model.matrix, 60 / model.bpm))
 				};
+			case 'UpdateButton':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							currentButtons: _user$project$Pling$nextButton(model.currentButtons)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			default:
 				return _user$project$Pling$init;
 		}
 	});
-var _user$project$Pling$Model = F2(
-	function (a, b) {
-		return {matrix: a, bpm: b};
+var _user$project$Pling$Model = F3(
+	function (a, b, c) {
+		return {matrix: a, bpm: b, currentButtons: c};
 	});
-var _user$project$Pling$Update = function (a) {
-	return {ctor: 'Update', _0: a};
+var _user$project$Pling$UpdateButton = function (a) {
+	return {ctor: 'UpdateButton', _0: a};
+};
+var _user$project$Pling$UpdatePlay = function (a) {
+	return {ctor: 'UpdatePlay', _0: a};
 };
 var _user$project$Pling$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, (_elm_lang$core$Time$minute / model.bpm) * 8, _user$project$Pling$Update);
+	return _elm_lang$core$Platform_Sub$batch(
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(_elm_lang$core$Time$every, (_elm_lang$core$Time$minute / model.bpm) * 8, _user$project$Pling$UpdatePlay),
+				A2(_elm_lang$core$Time$every, _elm_lang$core$Time$minute / model.bpm, _user$project$Pling$UpdateButton)
+			]));
 };
 var _user$project$Pling$Click = function (a) {
 	return {ctor: 'Click', _0: a};
@@ -7905,35 +7909,52 @@ var _user$project$Pling$view = function (model) {
 					[]),
 				A2(
 					_elm_lang$core$List$map,
-					function (xy) {
+					function (_p8) {
+						var _p9 = _p8;
+						var _p11 = _p9._1;
+						var _p10 = _p9._0;
 						return A2(
 							_elm_lang$html$Html$button,
 							_elm_lang$core$Native_List.fromArray(
 								[
-									_elm_lang$html$Html_Attributes$class('.btn'),
-									_user$project$Pling$buttonStyle(
-									A2(
-										_elm_lang$core$Maybe$withDefault,
-										false,
-										A2(_user$project$Matrix$get, xy, model.matrix))),
+									_elm_lang$html$Html_Attributes$classList(
+									_elm_lang$core$Native_List.fromArray(
+										[
+											{ctor: '_Tuple2', _0: 'btn', _1: true},
+											{
+											ctor: '_Tuple2',
+											_0: 'btn-active',
+											_1: A2(
+												_elm_lang$core$Maybe$withDefault,
+												false,
+												A2(
+													_user$project$Matrix$get,
+													{ctor: '_Tuple2', _0: _p10, _1: _p11},
+													model.matrix))
+										},
+											{
+											ctor: '_Tuple2',
+											_0: 'btn-play',
+											_1: _elm_lang$core$Native_Utils.eq(model.currentButtons, _p11)
+										}
+										])),
 									_elm_lang$html$Html_Events$onClick(
-									_user$project$Pling$Click(xy))
+									_user$project$Pling$Click(
+										{ctor: '_Tuple2', _0: _p10, _1: _p11}))
 								]),
 							_elm_lang$core$Native_List.fromArray(
-								[
-									_elm_lang$html$Html$text('b')
-								]));
+								[]));
 					},
 					A2(
 						_elm_lang$core$List$map,
 						F2(
 							function (v0, v1) {
 								return {ctor: '_Tuple2', _0: v0, _1: v1};
-							})(x),
-						_elm_lang$core$Native_List.range(0, y))));
+							})(y),
+						_elm_lang$core$Native_List.range(0, x))));
 		});
-	var buttonGrid = function (_p9) {
-		var _p10 = _p9;
+	var buttonGrid = function (_p12) {
+		var _p13 = _p12;
 		return A2(
 			_elm_lang$html$Html$ul,
 			_elm_lang$core$Native_List.fromArray(
@@ -7947,10 +7968,10 @@ var _user$project$Pling$view = function (model) {
 							[]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								A2(buttonList, a, _p10._0)
+								A2(buttonList, _p13._0, a)
 							]));
 				},
-				_elm_lang$core$Native_List.range(0, _p10._1)));
+				_elm_lang$core$Native_List.range(0, _p13._1)));
 	};
 	return buttonGrid(
 		{ctor: '_Tuple2', _0: 7, _1: 7});

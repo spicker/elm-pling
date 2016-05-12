@@ -7641,20 +7641,41 @@ var _elm_lang$html$Html_Events$Options = F2(
 		return {stopPropagation: a, preventDefault: b};
 	});
 
+var _user$project$Matrix$toPositionList = function (matrix) {
+	return _elm_lang$core$List$concat(
+		A2(
+			_elm_lang$core$List$map,
+			function (_p0) {
+				var _p1 = _p0;
+				return A2(
+					_elm_lang$core$List$map,
+					function (_p2) {
+						var _p3 = _p2;
+						return {
+							ctor: '_Tuple2',
+							_0: {ctor: '_Tuple2', _0: _p1._0, _1: _p3._0},
+							_1: _p3._1
+						};
+					},
+					_p1._1);
+			},
+			_elm_lang$core$Array$toIndexedList(
+				A2(_elm_lang$core$Array$map, _elm_lang$core$Array$toIndexedList, matrix))));
+};
 var _user$project$Matrix$filter = function (f) {
-	return function (_p0) {
+	return function (_p4) {
 		return A2(
 			_elm_lang$core$Array$filter,
-			function (_p1) {
+			function (_p5) {
 				return _elm_lang$core$Basics$not(
-					_elm_lang$core$Array$isEmpty(_p1));
+					_elm_lang$core$Array$isEmpty(_p5));
 			},
 			A2(
 				_elm_lang$core$Array$map,
 				function (bss) {
 					return A2(_elm_lang$core$Array$filter, f, bss);
 				},
-				_p0));
+				_p4));
 	};
 };
 var _user$project$Matrix$map = function (f) {
@@ -7674,28 +7695,39 @@ var _user$project$Matrix$fold = F3(
 			b,
 			mat);
 	});
+var _user$project$Matrix$toList = function (matrix) {
+	return A3(
+		_user$project$Matrix$fold,
+		F2(
+			function (a, bs) {
+				return A2(_elm_lang$core$List_ops['::'], a, bs);
+			}),
+		_elm_lang$core$Native_List.fromArray(
+			[]),
+		matrix);
+};
 var _user$project$Matrix$set = F3(
-	function (_p2, a, mat) {
-		var _p3 = _p2;
-		var _p5 = _p3._0;
-		var _p4 = A2(_elm_lang$core$Array$get, _p5, mat);
-		if (_p4.ctor === 'Nothing') {
+	function (_p6, a, mat) {
+		var _p7 = _p6;
+		var _p9 = _p7._0;
+		var _p8 = A2(_elm_lang$core$Array$get, _p9, mat);
+		if (_p8.ctor === 'Nothing') {
 			return mat;
 		} else {
 			return A3(
 				_elm_lang$core$Array$set,
-				_p5,
-				A3(_elm_lang$core$Array$set, _p3._1, a, _p4._0),
+				_p9,
+				A3(_elm_lang$core$Array$set, _p7._1, a, _p8._0),
 				mat);
 		}
 	});
 var _user$project$Matrix$get = F2(
-	function (_p6, mat) {
-		var _p7 = _p6;
+	function (_p10, mat) {
+		var _p11 = _p10;
 		return A2(
 			_elm_lang$core$Maybe$andThen,
-			A2(_elm_lang$core$Array$get, _p7._0, mat),
-			_elm_lang$core$Array$get(_p7._1));
+			A2(_elm_lang$core$Array$get, _p11._0, mat),
+			_elm_lang$core$Array$get(_p11._1));
 	});
 var _user$project$Matrix$append = _elm_lang$core$Array$append;
 var _user$project$Matrix$isEmpty = _elm_lang$core$Array$isEmpty;
@@ -7709,16 +7741,16 @@ var _user$project$Matrix$length = function (mat) {
 	return {ctor: '_Tuple2', _0: a, _1: b};
 };
 var _user$project$Matrix$repeat = F2(
-	function (_p8, a) {
-		var _p9 = _p8;
+	function (_p12, a) {
+		var _p13 = _p12;
 		return A2(
 			_elm_lang$core$Array$repeat,
-			_p9._0,
-			A2(_elm_lang$core$Array$repeat, _p9._1, a));
+			_p13._0,
+			A2(_elm_lang$core$Array$repeat, _p13._1, a));
 	});
 var _user$project$Matrix$t1 = A2(
 	_user$project$Matrix$repeat,
-	{ctor: '_Tuple2', _0: 2, _1: 2},
+	{ctor: '_Tuple2', _0: 5, _1: 2},
 	1);
 var _user$project$Matrix$testfold = A3(
 	_user$project$Matrix$fold,
@@ -7728,6 +7760,10 @@ var _user$project$Matrix$testfold = A3(
 		}),
 	0,
 	_user$project$Matrix$t1);
+var _user$project$Matrix$t2 = A2(
+	_user$project$Matrix$repeat,
+	{ctor: '_Tuple2', _0: 3, _1: 2},
+	true);
 var _user$project$Matrix$empty = _elm_lang$core$Array$empty;
 
 var _user$project$Pling$buttonStyle = function (b) {
@@ -7761,27 +7797,102 @@ var _user$project$Pling$toggle = F2(
 			return A3(_user$project$Matrix$set, pos, false, matrix);
 		}
 	});
-var _user$project$Pling$init = {
-	ctor: '_Tuple2',
-	_0: A2(
-		_user$project$Matrix$repeat,
-		{ctor: '_Tuple2', _0: 8, _1: 8},
-		false),
-	_1: _elm_lang$core$Platform_Cmd$none
-};
+var _user$project$Pling$play = F2(
+	function (matrix, interval) {
+		return A2(
+			_elm_lang$core$Json_Encode$encode,
+			0,
+			_elm_lang$core$Json_Encode$list(
+				A2(
+					_elm_lang$core$List$map,
+					function (_p2) {
+						var _p3 = _p2;
+						return _elm_lang$core$Json_Encode$object(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									{
+									ctor: '_Tuple2',
+									_0: 'tone',
+									_1: _elm_lang$core$Json_Encode$int(_p3._0)
+								},
+									{
+									ctor: '_Tuple2',
+									_0: 'time',
+									_1: _elm_lang$core$Json_Encode$float(_p3._1)
+								}
+								]));
+					},
+					A2(
+						_elm_lang$core$List$map,
+						function (_p4) {
+							var _p5 = _p4;
+							return {
+								ctor: '_Tuple2',
+								_0: _p5._0,
+								_1: _elm_lang$core$Basics$toFloat(_p5._1) * interval
+							};
+						},
+						A2(
+							_elm_lang$core$List$map,
+							_elm_lang$core$Basics$fst,
+							A2(
+								_elm_lang$core$List$filter,
+								function (_p6) {
+									var _p7 = _p6;
+									return _elm_lang$core$Native_Utils.eq(_p7._1, true);
+								},
+								_user$project$Matrix$toPositionList(matrix)))))));
+	});
+var _user$project$Pling$init = function () {
+	var model = {
+		matrix: A2(
+			_user$project$Matrix$repeat,
+			{ctor: '_Tuple2', _0: 8, _1: 8},
+			false),
+		bpm: 80
+	};
+	return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
+}();
+var _user$project$Pling$playNotes = _elm_lang$core$Native_Platform.outgoingPort(
+	'playNotes',
+	function (v) {
+		return v;
+	});
 var _user$project$Pling$update = F2(
 	function (msg, model) {
-		var _p2 = msg;
-		if (_p2.ctor === 'Click') {
-			return {
-				ctor: '_Tuple2',
-				_0: A2(_user$project$Pling$toggle, _p2._0, model),
-				_1: _elm_lang$core$Platform_Cmd$none
-			};
-		} else {
-			return _user$project$Pling$init;
+		var _p8 = msg;
+		switch (_p8.ctor) {
+			case 'Click':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{
+							matrix: A2(_user$project$Pling$toggle, _p8._0, model.matrix)
+						}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
+			case 'Update':
+				return {
+					ctor: '_Tuple2',
+					_0: model,
+					_1: _user$project$Pling$playNotes(
+						A2(_user$project$Pling$play, model.matrix, model.bpm / (60 * 8)))
+				};
+			default:
+				return _user$project$Pling$init;
 		}
 	});
+var _user$project$Pling$Model = F2(
+	function (a, b) {
+		return {matrix: a, bpm: b};
+	});
+var _user$project$Pling$Update = function (a) {
+	return {ctor: 'Update', _0: a};
+};
+var _user$project$Pling$subscriptions = function (model) {
+	return A2(_elm_lang$core$Time$every, (_elm_lang$core$Time$minute / model.bpm) * 2, _user$project$Pling$Update);
+};
 var _user$project$Pling$Click = function (a) {
 	return {ctor: 'Click', _0: a};
 };
@@ -7803,7 +7914,7 @@ var _user$project$Pling$view = function (model) {
 									A2(
 										_elm_lang$core$Maybe$withDefault,
 										false,
-										A2(_user$project$Matrix$get, xy, model))),
+										A2(_user$project$Matrix$get, xy, model.matrix))),
 									_elm_lang$html$Html_Events$onClick(
 									_user$project$Pling$Click(xy))
 								]),
@@ -7820,8 +7931,8 @@ var _user$project$Pling$view = function (model) {
 							})(x),
 						_elm_lang$core$Native_List.range(0, y))));
 		});
-	var buttonGrid = function (_p3) {
-		var _p4 = _p3;
+	var buttonGrid = function (_p9) {
+		var _p10 = _p9;
 		return A2(
 			_elm_lang$html$Html$ul,
 			_elm_lang$core$Native_List.fromArray(
@@ -7835,24 +7946,17 @@ var _user$project$Pling$view = function (model) {
 							[]),
 						_elm_lang$core$Native_List.fromArray(
 							[
-								A2(buttonList, a, _p4._0)
+								A2(buttonList, a, _p10._0)
 							]));
 				},
-				_elm_lang$core$Native_List.range(0, _p4._1)));
+				_elm_lang$core$Native_List.range(0, _p10._1)));
 	};
 	return buttonGrid(
 		{ctor: '_Tuple2', _0: 7, _1: 7});
 };
 var _user$project$Pling$main = {
 	main: _elm_lang$html$Html_App$program(
-		{
-			init: _user$project$Pling$init,
-			update: _user$project$Pling$update,
-			view: _user$project$Pling$view,
-			subscriptions: function (_p5) {
-				return _elm_lang$core$Platform_Sub$none;
-			}
-		})
+		{init: _user$project$Pling$init, update: _user$project$Pling$update, view: _user$project$Pling$view, subscriptions: _user$project$Pling$subscriptions})
 };
 var _user$project$Pling$Reset = {ctor: 'Reset'};
 

@@ -1,14 +1,15 @@
-module Pling exposing (main)
+port module Pling exposing (..)
 
 import Html exposing (..)
 import Html.Events exposing (..)
 import Html.Attributes exposing (..)
 import Html.App exposing (..)
 import Matrix exposing (..)
-import Time exposing (Time, minute, every)
+import Time exposing (Time, minute, every, second)
+import List
+import Json.Encode as Json exposing (..)
 
-
-port playNote : Model -> Cmd msg 
+port playNotes : String -> Cmd msg 
 
 
 main = 
@@ -25,6 +26,8 @@ type alias Model =
     , bpm : Time }
 
 
+type alias Tone = Int
+
 
 init : (Model, Cmd Msg)
 init = 
@@ -34,32 +37,42 @@ init =
             , bpm = 80 }
     in  
         ( model
-        , playNote model )
-
+        , Cmd.none )
 
 
 --UPDATE
 type Msg = 
     Reset
     | Click Position
-    | Update
+    | Update Time
     
-
 
 update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
     case msg of
         Click position -> 
-            ( toggle position model.matrix
+            ( { model | matrix = toggle position model.matrix }
             , Cmd.none )
             
-        Update ->
+        Update time ->
             ( model
-            , playNote model )
+            , play model.matrix (model.bpm/(60*8)) |> playNotes)
             
         Reset -> 
             init
-            
+
+
+play : Matrix Bool -> Time -> String
+play matrix interval =
+    toPositionList matrix
+    |> List.filter (\(pos,b) -> b == True)
+    |> List.map fst 
+    |> List.map ( \(x,y) -> (x, (toFloat y) * interval))
+    |> List.map ( \(a,b) -> Json.object [("tone", int a), ("time", float b)] )
+    |> Json.list
+    |> Json.encode 0
+     
+    
 
 toggle : Position -> Matrix Bool -> Matrix Bool
 toggle pos matrix =
@@ -81,7 +94,7 @@ view model =
         buttonList : Int -> Int -> Html Msg
         buttonList x y = 
             List.map
-            (\xy -> button [ buttonStyle (Maybe.withDefault False (get xy model)), onClick (Click xy) ] [text "b"])
+            (\xy -> button [ buttonStyle (Maybe.withDefault False (get xy model.matrix)), onClick (Click xy) ] [text "b"])
             (List.map ((,) x) [0..y])
             |> span []
 
@@ -111,4 +124,4 @@ buttonStyle b =
 --SUBSCRIPTIONS
 subscriptions : Model -> Sub Msg
 subscriptions model = 
-    every bpm Update
+    every ((minute/model.bpm)*2) Update 

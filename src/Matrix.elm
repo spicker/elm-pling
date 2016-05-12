@@ -46,8 +46,21 @@ map f = Array.map (\a -> Array.map f a)
 filter : (a -> Bool) -> Matrix a -> Matrix a 
 filter f = Array.filter (not << Array.isEmpty) << Array.map (\bss -> Array.filter f bss)
 
+toList : Matrix a -> List a
+toList matrix =
+    fold (\a bs -> a::bs) [] matrix
+    
+toPositionList : Matrix a -> List (Position,a)
+toPositionList matrix =
+    Array.map Array.toIndexedList matrix
+    |> Array.toIndexedList
+    |> List.map (\(i,l) -> List.map (\(y,a) -> ((i,y),a)) l)
+    |> List.concat
+
 t1 : Matrix Int
-t1 = repeat (2,2) 1
+t1 = repeat (5,2) 1
+
+t2 = repeat (3,2) True
 
 testfold : Int
 testfold = (fold (+) 0 t1)

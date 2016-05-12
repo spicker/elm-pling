@@ -1,21 +1,22 @@
+
 var app = Elm.Pling.fullscreen();
 
-var context;
+var context = null;
 var buffers = [];
 window.addEventListener('load', init, false);
 
 function init() {
     try {
-    // Fix up for prefixing
-    window.AudioContext = window.AudioContext||window.webkitAudioContext;
-    context = new AudioContext();
+        // Fix up for prefixing
+        window.AudioContext = window.AudioContext || window.webkitAudioContext;
+        context = new AudioContext();
     }
-    catch(e) {
-    alert('Web Audio API is not supported in this browser');
+    catch (e) {
+        alert('Web Audio API is not supported in this browser');
     }
-    
+
     loadBuffers();
-    
+
     //app.ports.buffers.send(buffers);
 }
 
@@ -33,7 +34,7 @@ function loadBuffers() {
             '/res/mp3/C5.mp3'
         ],
         finishedLoading
-        );
+    );
 
     bufferLoader.load();
 }
@@ -51,23 +52,17 @@ function playSound(buffer, time) {
     source.start(time);
 }
 
-//var startTime = context.currentTime + 0.100;
-var tempo = 80; // BPM (beats per minute)
-var eighthNoteTime = (60 / tempo) / 2;
+app.ports.playNotes.subscribe(function (json) {
 
-app.ports.playNotes.subscribe(function (matrix) {
-    for (var i = 0; i < 8; i++) {
-        var time = eighthNoteTime + i;
-        var notelist = matrix[i];
-        
-        for (var j = 0; j < 8; j++) {
-            var note = notelist[j];
-            if (note==true) {
-                playSound(buffers[j],time);
-            }
-            
-        }
+    obj = JSON && JSON.parse(json);
+    console.log("" + json);
+    console.log("" + obj);
+
+    for (var i = 0; i < obj.length; i++) {
+        tone = buffers[obj[i].tone];
+        time = context.currentTime + obj[i].time;
+        playSound(tone,time);
     }
+
+
 });
-
-

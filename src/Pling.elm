@@ -34,7 +34,7 @@ init =
     let 
         model = 
             { matrix = repeat (8,8) False 
-            , bpm = 80 }
+            , bpm = 180 }
     in  
         ( model
         , Cmd.none )
@@ -56,7 +56,7 @@ update msg model =
             
         Update time ->
             ( model
-            , play model.matrix (model.bpm/(60*8)) |> playNotes)
+            , play model.matrix ((60/model.bpm)) |> playNotes)
             
         Reset -> 
             init
@@ -124,4 +124,4 @@ buttonStyle b =
 --SUBSCRIPTIONS
 subscriptions : Model -> Sub Msg
 subscriptions model = 
-    every ((minute/model.bpm)*2) Update 
+    every ((minute/model.bpm)*8) Update 

@@ -7849,7 +7849,7 @@ var _user$project$Pling$init = function () {
 			_user$project$Matrix$repeat,
 			{ctor: '_Tuple2', _0: 8, _1: 8},
 			false),
-		bpm: 80
+		bpm: 180
 	};
 	return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
 }();
@@ -7877,7 +7877,7 @@ var _user$project$Pling$update = F2(
 					ctor: '_Tuple2',
 					_0: model,
 					_1: _user$project$Pling$playNotes(
-						A2(_user$project$Pling$play, model.matrix, model.bpm / (60 * 8)))
+						A2(_user$project$Pling$play, model.matrix, 60 / model.bpm))
 				};
 			default:
 				return _user$project$Pling$init;
@@ -7891,7 +7891,7 @@ var _user$project$Pling$Update = function (a) {
 	return {ctor: 'Update', _0: a};
 };
 var _user$project$Pling$subscriptions = function (model) {
-	return A2(_elm_lang$core$Time$every, (_elm_lang$core$Time$minute / model.bpm) * 2, _user$project$Pling$Update);
+	return A2(_elm_lang$core$Time$every, (_elm_lang$core$Time$minute / model.bpm) * 8, _user$project$Pling$Update);
 };
 var _user$project$Pling$Click = function (a) {
 	return {ctor: 'Click', _0: a};

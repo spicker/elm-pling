@@ -16,53 +16,45 @@ function init() {
     }
 
     loadBuffers();
-
-    //app.ports.buffers.send(buffers);
 }
 
 function loadBuffers() {
     bufferLoader = new BufferLoader(
         context,
         [
-            '/res/mp3/C4.mp3',
-            '/res/mp3/D4.mp3',
-            '/res/mp3/E4.mp3',
-            '/res/mp3/F4.mp3',
-            '/res/mp3/G4.mp3',
-            '/res/mp3/B4.mp3',
-            '/res/mp3/A4.mp3',
-            '/res/mp3/C5.mp3'
+            'res/guitar/d5.ogg',
+            'res/guitar/a4.ogg',
+            'res/guitar/e4.ogg',
+            'res/guitar/b3.ogg',
+            'res/guitar/g3.ogg',
+            'res/guitar/d3.ogg',
+            'res/guitar/a2.ogg',
+            'res/guitar/e2.ogg'
         ],
-        finishedLoading
+        finishedLoading(function (bufferList) {
+            buffers = bufferList;
+        })
     );
 
     bufferLoader.load();
-}
-
-function finishedLoading(bufferList) {
-    buffers = bufferList;
 }
 
 function playSound(buffer, time) {
     var source = context.createBufferSource();
     source.buffer = buffer;
     source.connect(context.destination);
-    if (!source.start)
-        source.start = source.noteOn;
     source.start(time);
 }
 
 app.ports.playNotes.subscribe(function (json) {
 
-    obj = JSON && JSON.parse(json);
-    console.log("" + json);
-    console.log("" + obj);
-
+    var obj = JSON && JSON.parse(json);
+    //console.log("" + json);
+    var curTime = context.currentTime;
+    
     for (var i = 0; i < obj.length; i++) {
-        tone = buffers[obj[i].tone];
-        time = context.currentTime + obj[i].time;
+        var tone = buffers[obj[i].tone];
+        var time = curTime + obj[i].time;
         playSound(tone,time);
     }
-
-
 });

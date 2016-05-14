@@ -29,3 +29,109 @@ button.btn-active {
 button.btn-playing.btn-active{
     border: solid #fff894 3px;
 }
+
+.grid{
+    min-width: 400px;
+    text-align: center;
+}
+
+button.controls{
+    font-size: 15px;
+    padding: 10px;
+    border: 0px;
+    vertical-align: middle;
+    text-decoration: none;
+    background: none;
+    vertical-align: middle;
+    color: black
+}
+
+button.controls:active{
+    color: greenyellow;
+    vertical-align: middle;
+}
+input[type=range].controls {
+    -webkit-appearance: none;
+    width: 100px;
+    vertical-align: middle;
+    margin: 7px 0;
+}
+input[type=range].controls:focus {
+    outline: none;
+}
+input[type=range].controls::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 10px;
+    cursor: pointer;
+    background: #000000;
+    border-radius: 0px;
+    border: 4.5px solid white;
+}
+input[type=range].controls::-webkit-slider-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid rgba(0, 0, 0, 0);
+    height: 15px;
+    width: 2px;
+    border-radius: 0px;
+    background: #000000;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -7px;
+}
+input[type=range].controls:focus::-webkit-slider-runnable-track {
+    background: greenyellow;
+}
+input[type=range].controls::-moz-range-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    background: #000000;
+    border-radius: 0px;
+    border: 0px solid rgba(1, 1, 1, 0);
+}
+input[type=range].controls::-moz-range-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid rgba(0, 0, 0, 0);
+    height: 15px;
+    width: 2px;
+    border-radius: 0px;
+    background: #000000;
+    cursor: pointer;
+}
+input[type=range].controls::-ms-track {
+    width: 100%;
+    height: 2px;
+    cursor: pointer;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+input[type=range].controls::-ms-fill-lower {
+    background: #000000;
+    border: 0px solid rgba(1, 1, 1, 0);
+    border-radius: 0px;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+input[type=range].controls::-ms-fill-upper {
+    background: #000000;
+    border: 0px solid rgba(1, 1, 1, 0);
+    border-radius: 0px;
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+}
+input[type=range].controls::-ms-thumb {
+    box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
+    border: 0px solid rgba(0, 0, 0, 0);
+    height: 15px;
+    width: 2px;
+    border-radius: 0px;
+    background: #000000;
+    cursor: pointer;
+    height: 1px;
+}
+input[type=range].controls:focus::-ms-fill-lower {
+    background: greenyellow;
+}
+input[type=range].controls:focus::-ms-fill-upper {
+    background: greenyellow;
+}

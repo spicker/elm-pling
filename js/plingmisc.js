@@ -61,3 +61,7 @@ app.ports.playNotes.subscribe(function (json) {
     }
 });
 
+app.ports.volume.subscribe(function (volume) {
+    gain.gain.value = volume;
+})
+

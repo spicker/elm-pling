@@ -13,6 +13,7 @@ import Html.Lazy exposing (lazy)
 import Array exposing (toIndexedList)
 
 port playNotes : String -> Cmd msg 
+port volume : String -> Cmd msg
 
 
 main = 
@@ -28,7 +29,8 @@ type alias Model =
     { matrix : Matrix Bool
     , bpm : Time 
     , currentCol : Int
-    , playing : Bool }
+    , playing : Bool 
+    , volume : String }
 
 
 type alias Tone = Int
@@ -39,9 +41,10 @@ init =
     let 
         model = 
             { matrix = repeat (8,8) False 
-            , bpm = 180 
+            , bpm = 80 
             , currentCol = 0
-            , playing = False }
+            , playing = False 
+            , volume = "1" }
     in  
         ( model
         , Cmd.none )
@@ -53,6 +56,7 @@ type Msg =
     | Click Position
     | UpdatePlay Time
     | IsPlaying Bool
+    | Volume String
     
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -70,6 +74,10 @@ update msg model =
             ( { model | playing = bool }
             , Cmd.none )
             
+        Volume vol ->
+            ( { model | volume = vol }
+            , volume vol )
+            
         Reset -> 
             init
 
@@ -80,7 +88,7 @@ next x = if x < 7 then x + 1 else 0
     
 play : Model -> Json.Value
 play model = 
-    case getY (next model.currentCol) model.matrix of 
+    case getY (model.currentCol) model.matrix of 
         Just array ->
             List.filterMap (\(i,e) -> if e==True then Just i else Nothing) (toIndexedList array)
             |> List.map ( \i -> Json.object [("tone", int i)] )
@@ -107,6 +115,26 @@ toggle pos matrix =
 view : Model -> Html Msg
 view model =
     let 
+        controls : Html Msg
+        controls = 
+            div [] 
+                [ button 
+                    [ class "play controls"
+                    , onClick (IsPlaying <| not model.playing) ]
+                    [ if model.playing then text "❙❙" else text "▸" ]
+                , input 
+                    [ class "volume controls"
+                    , type' "range"
+                    , Html.Attributes.min "0"
+                    , Html.Attributes.max "1"
+                    , step "0.01", value model.volume
+                    , onInput Volume ] []
+                , button 
+                    [ class "reset controls"
+                    , onClick Reset ] 
+                    [ text "x" ]
+                ]
+        
         buttonList : Int -> Int -> Html Msg
         buttonList x y = 
             List.map
@@ -114,7 +142,7 @@ view model =
                     [ classList [
                         ("btn", True),
                         ("btn-active", Maybe.withDefault False ( get (a,b) model.matrix )),
-                        ("btn-playing", model.currentCol == b) ]
+                        ("btn-playing", (model.currentCol) == next b) ]
                     , onClick (Click (a,b)) ] [])
                 (List.map ((,) y) [0..x])
                 |> span []
@@ -122,20 +150,18 @@ view model =
         
         buttonGrid : Int -> Int -> Html Msg
         buttonGrid x y = 
+            controls ::
             List.map (\a -> div [] [buttonList x a]) [0..y]
-            |> ul []
+            |> div [class "grid"]
 
     in
-        div [] [ button [style [("font-size","30px")], onClick (IsPlaying <| not model.playing)] 
-            [ if model.playing then text "❙❙" else text "▸"]
-            , buttonGrid 7 7
-            ]
+        buttonGrid 7 7
 
 
 --SUBSCRIPTIONS
 subscriptions : Model -> Sub Msg
 subscriptions model = 
     Platform.Sub.batch 
-        [ if model.playing then every ((minute/model.bpm)) UpdatePlay else none
+        [ if model.playing then every ((minute/model.bpm)/2) UpdatePlay else none
         ]
-    
+

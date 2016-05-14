@@ -3,6 +3,8 @@ var app = Elm.Pling.fullscreen();
 
 var context = null;
 var buffers = [];
+var gain;
+var playing = false;
 window.addEventListener('load', init, false);
 
 function init() {
@@ -14,7 +16,10 @@ function init() {
     catch (e) {
         alert('Web Audio API is not supported in this browser');
     }
-
+    
+    gain = context.createGain();
+    gain.value = 1;
+    gain.connect(context.destination);
     loadBuffers();
 }
 
@@ -32,7 +37,7 @@ function loadBuffers() {
             'res/guitar/e2.mp3'
         ],
         function (bufferList) {
-            buffers = bufferList;
+            buffers = bufferList       
         }
     );
 
@@ -42,19 +47,17 @@ function loadBuffers() {
 function playSound(buffer, time) {
     var source = context.createBufferSource();
     source.buffer = buffer;
-    source.connect(context.destination);
+    source.connect(gain);
     source.start(time);
 }
 
 app.ports.playNotes.subscribe(function (json) {
-
-    var obj = JSON && JSON.parse(json);
-    //console.log("" + json);
-    var curTime = context.currentTime;
-    
-    for (var i = 0; i < obj.length; i++) {
-        var tone = buffers[obj[i].tone];
-        var time = curTime + obj[i].time;
-        playSound(tone,time);
+        var obj = JSON && JSON.parse(json);
+        console.log("" + json);
+        
+        for (var i = 0; i < obj.length; i++) {
+            var tone = buffers[obj[i].tone];
+            playSound(tone,0);
     }
 });
+

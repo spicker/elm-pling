@@ -31,6 +31,10 @@ append = Array.append
 get : Position -> Matrix a -> Maybe a 
 get (a,b) mat =  Array.get a mat `Maybe.andThen` Array.get b
 
+getY : Int -> Matrix a -> Maybe (Array a)
+getY y = 
+    Array.foldl (\x a -> Maybe.map2 Array.push (Array.get y x) a) (Just Array.empty)
+    
 set : Position -> a -> Matrix a -> Matrix a 
 set (x,y) a mat = 
     case Array.get x mat of
@@ -61,6 +65,8 @@ t1 : Matrix Int
 t1 = repeat (5,2) 1
 
 t2 = repeat (3,2) True
+
+t3 = Array.push (Array.fromList [0..4]) <| Array.push (Array.fromList [1..5]) <| Array.push (Array.fromList [2..6]) Array.empty
 
 testfold : Int
 testfold = (fold (+) 0 t1)

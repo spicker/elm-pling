@@ -50,6 +50,17 @@ button.controls:active{
     color: greenyellow;
     vertical-align: middle;
 }
+
+input[type=text].controls{
+    width: 20px;
+    height: 15px;
+    vertical-align: middle;
+    margin-left: 10px;
+}
+input[type=text].controls:focus{
+    outline: none;
+}
+
 input[type=range].controls {
     -webkit-appearance: none;
     width: 100px;

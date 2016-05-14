@@ -11,6 +11,7 @@ import Json.Encode as Json exposing (Value,object,list,encode,int,float)
 import Platform.Sub exposing (batch,none)
 import Html.Lazy exposing (lazy)
 import Array exposing (toIndexedList)
+import String exposing (toFloat)
 
 port playNotes : String -> Cmd msg 
 port volume : String -> Cmd msg
@@ -27,7 +28,7 @@ main =
 --MODEL
 type alias Model =
     { matrix : Matrix Bool
-    , bpm : Time 
+    , bpm : String 
     , currentCol : Int
     , playing : Bool 
     , volume : String }
@@ -41,7 +42,7 @@ init =
     let 
         model = 
             { matrix = repeat (8,8) False 
-            , bpm = 80 
+            , bpm = "80" 
             , currentCol = 0
             , playing = False 
             , volume = "1" }
@@ -57,6 +58,7 @@ type Msg =
     | UpdatePlay Time
     | IsPlaying Bool
     | Volume String
+    | Bpm String
     
 
 update : Msg -> Model -> (Model, Cmd Msg)
@@ -77,6 +79,10 @@ update msg model =
         Volume vol ->
             ( { model | volume = vol }
             , volume vol )
+            
+        Bpm x ->
+            ( { model | bpm = x }
+            , Cmd.none )
             
         Reset -> 
             init
@@ -127,8 +133,14 @@ view model =
                     , type' "range"
                     , Html.Attributes.min "0"
                     , Html.Attributes.max "1"
-                    , step "0.01", value model.volume
+                    , step "0.01"
+                    , value model.volume
                     , onInput Volume ] []
+                , input 
+                    [ class "bpm controls"
+                    , type' "text"
+                    , value (model.bpm)
+                    , onInput Bpm ] []
                 , button 
                     [ class "reset controls"
                     , onClick Reset ] 
@@ -161,7 +173,6 @@ view model =
 --SUBSCRIPTIONS
 subscriptions : Model -> Sub Msg
 subscriptions model = 
-    Platform.Sub.batch 
-        [ if model.playing then every ((minute/model.bpm)/2) UpdatePlay else none
-        ]
+    if model.playing then every ((minute/(Result.withDefault 1 <| String.toFloat model.bpm))/2) UpdatePlay else none
+        
 

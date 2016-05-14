@@ -7846,7 +7846,7 @@ var _user$project$Pling$init = function () {
 			_user$project$Matrix$repeat,
 			{ctor: '_Tuple2', _0: 8, _1: 8},
 			false),
-		bpm: 80,
+		bpm: '80',
 		currentCol: 0,
 		playing: false,
 		volume: '1'
@@ -7908,6 +7908,14 @@ var _user$project$Pling$update = F2(
 						{volume: _p5}),
 					_1: _user$project$Pling$volume(_p5)
 				};
+			case 'Bpm':
+				return {
+					ctor: '_Tuple2',
+					_0: _elm_lang$core$Native_Utils.update(
+						model,
+						{bpm: _p4._0}),
+					_1: _elm_lang$core$Platform_Cmd$none
+				};
 			default:
 				return _user$project$Pling$init;
 		}
@@ -7916,6 +7924,9 @@ var _user$project$Pling$Model = F5(
 	function (a, b, c, d, e) {
 		return {matrix: a, bpm: b, currentCol: c, playing: d, volume: e};
 	});
+var _user$project$Pling$Bpm = function (a) {
+	return {ctor: 'Bpm', _0: a};
+};
 var _user$project$Pling$Volume = function (a) {
 	return {ctor: 'Volume', _0: a};
 };
@@ -7926,11 +7937,13 @@ var _user$project$Pling$UpdatePlay = function (a) {
 	return {ctor: 'UpdatePlay', _0: a};
 };
 var _user$project$Pling$subscriptions = function (model) {
-	return _elm_lang$core$Platform_Sub$batch(
-		_elm_lang$core$Native_List.fromArray(
-			[
-				model.playing ? A2(_elm_lang$core$Time$every, (_elm_lang$core$Time$minute / model.bpm) / 2, _user$project$Pling$UpdatePlay) : _elm_lang$core$Platform_Sub$none
-			]));
+	return model.playing ? A2(
+		_elm_lang$core$Time$every,
+		(_elm_lang$core$Time$minute / A2(
+			_elm_lang$core$Result$withDefault,
+			1,
+			_elm_lang$core$String$toFloat(model.bpm))) / 2,
+		_user$project$Pling$UpdatePlay) : _elm_lang$core$Platform_Sub$none;
 };
 var _user$project$Pling$Click = function (a) {
 	return {ctor: 'Click', _0: a};
@@ -8021,6 +8034,17 @@ var _user$project$Pling$view = function (model) {
 						_elm_lang$html$Html_Attributes$step('0.01'),
 						_elm_lang$html$Html_Attributes$value(model.volume),
 						_elm_lang$html$Html_Events$onInput(_user$project$Pling$Volume)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[])),
+				A2(
+				_elm_lang$html$Html$input,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$class('bpm controls'),
+						_elm_lang$html$Html_Attributes$type$('text'),
+						_elm_lang$html$Html_Attributes$value(model.bpm),
+						_elm_lang$html$Html_Events$onInput(_user$project$Pling$Bpm)
 					]),
 				_elm_lang$core$Native_List.fromArray(
 					[])),

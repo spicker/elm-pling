@@ -52,12 +52,12 @@ function playSound(buffer, time) {
 }
 
 app.ports.playNotes.subscribe(function (json) {
-        var obj = JSON && JSON.parse(json);
-        console.log("" + json);
-        
-        for (var i = 0; i < obj.length; i++) {
-            var tone = buffers[obj[i].tone];
-            playSound(tone,0);
+    var obj = JSON && JSON.parse(json);
+    console.log("" + json);
+    
+    for (var i = 0; i < obj.length; i++) {
+        var tone = buffers[obj[i].tone];
+        playSound(tone,0);
     }
 });
 

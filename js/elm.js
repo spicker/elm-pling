@@ -8004,6 +8004,26 @@ var _user$project$Pling$view = function (model) {
 							})(y),
 						_elm_lang$core$Native_List.range(0, x))));
 		});
+	var buttonGrid = F2(
+		function (x, y) {
+			return A2(
+				_elm_lang$html$Html$div,
+				_elm_lang$core$Native_List.fromArray(
+					[]),
+				A2(
+					_elm_lang$core$List$map,
+					function (a) {
+						return A2(
+							_elm_lang$html$Html$div,
+							_elm_lang$core$Native_List.fromArray(
+								[]),
+							_elm_lang$core$Native_List.fromArray(
+								[
+									A2(buttonList, x, a)
+								]));
+					},
+					_elm_lang$core$Native_List.range(0, y)));
+		});
 	var controls = A2(
 		_elm_lang$html$Html$div,
 		_elm_lang$core$Native_List.fromArray(
@@ -8060,32 +8080,17 @@ var _user$project$Pling$view = function (model) {
 						_elm_lang$html$Html$text('x')
 					]))
 			]));
-	var buttonGrid = F2(
-		function (x, y) {
-			return A2(
-				_elm_lang$html$Html$div,
-				_elm_lang$core$Native_List.fromArray(
-					[
-						_elm_lang$html$Html_Attributes$class('grid')
-					]),
-				A2(
-					_elm_lang$core$List_ops['::'],
-					controls,
-					A2(
-						_elm_lang$core$List$map,
-						function (a) {
-							return A2(
-								_elm_lang$html$Html$div,
-								_elm_lang$core$Native_List.fromArray(
-									[]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										A2(buttonList, x, a)
-									]));
-						},
-						_elm_lang$core$Native_List.range(0, y))));
-		});
-	return A2(buttonGrid, 7, 7);
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('grid')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				controls,
+				A2(buttonGrid, 7, 7)
+			]));
 };
 var _user$project$Pling$main = {
 	main: _elm_lang$html$Html_App$program(

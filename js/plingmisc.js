@@ -48,6 +48,9 @@ function playSound(buffer, time) {
     var source = context.createBufferSource();
     source.buffer = buffer;
     source.connect(gain);
+    if(!source.start){
+        source.start=source.noteOn;
+    }
     source.start(time);
 }
 
@@ -64,4 +67,15 @@ app.ports.playNotes.subscribe(function (json) {
 app.ports.volume.subscribe(function (volume) {
     gain.gain.value = volume;
 })
+
+window.addEventListener('touchstart', function() {
+
+	var buffer = context.createBuffer(1, 1, 22050);
+	var source = context.createBufferSource();
+	source.buffer = buffer;
+
+	source.connect(context.destination);
+
+	source.start(0);
+}, false);
 

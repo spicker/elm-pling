@@ -162,12 +162,14 @@ view model =
         
         buttonGrid : Int -> Int -> Html Msg
         buttonGrid x y = 
-            controls ::
             List.map (\a -> div [] [buttonList x a]) [0..y]
-            |> div [class "grid"]
+            |> div []
 
     in
-        buttonGrid 7 7
+        div [class "grid"] 
+            [ controls
+            , buttonGrid 7 7]
+        
 
 
 --SUBSCRIPTIONS

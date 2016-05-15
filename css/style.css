@@ -1,15 +1,15 @@
 button.btn {
-    -webkit-border-radius: 5;
-    -moz-border-radius: 5;
-    border-radius: 5px;
-    -webkit-box-shadow: 0px 0px 5px #666666;
-    -moz-box-shadow: 0px 0px 5px #666666;
-    box-shadow: 0px 0px 5px #666666;
+    -webkit-border-radius: 0.5vmin;
+    -moz-border-radius: 0.5vmin;
+    border-radius: 0.8vmin;
+    -webkit-box-shadow: 0vmin 0vmin 0.5vmin #666666;
+    -moz-box-shadow: 0vmin 0vmin 0.5vmin #666666;
+    box-shadow: 0vmin 0vmin 0.5vmin #666666;
     background: lightgreen;
-    padding: 20px 20px 20px 20px;
-    border: solid #666666 3px;
+    padding: 4.5vmin;
+    border: solid #666666 0.8vmin;
     text-decoration: none;
-    margin: 0px;
+    margin: 0vmin;
 }
 
 button.btn:hover {
@@ -18,7 +18,7 @@ button.btn:hover {
 
 button.btn-active {
     background: lightgoldenrodyellow;
-    border: solid greenyellow 3px;
+    border: solid greenyellow 0.8vmin;
 }
 
 /*button.btn-play {
@@ -27,19 +27,29 @@ button.btn-active {
 }*/
 
 button.btn-playing.btn-active{
-    border: solid #fff894 3px;
+    border: solid #fff894 0.8vmin;
 }
 
 .grid{
+    -webkit-appearance: none;
     min-width: 400px;
+    max-width: 800px;
+    height: 90vh;
+    width: 100%;
     text-align: center;
+    margin: 0 auto; 
+}
+.controls{
+    font-size: 2.8vmin;
 }
 
 button.controls{
-    font-size: 15px;
-    padding: 10px;
+    -webkit-appearance: none;
+    padding: 1vmin;
     border: 0px;
+    font-size: 4vmin;
     vertical-align: middle;
+    text-align: center;
     text-decoration: none;
     background: none;
     vertical-align: middle;
@@ -56,10 +66,12 @@ button.controls:active{
 }
 
 input[type=text].controls{
-    width: 20px;
-    height: 15px;
+    width: 5.5vmin;
+    height: 3.5vmin;
+    text-align: center;
     vertical-align: middle;
-    margin-left: 10px;
+    margin-left: 2vmin;
+    border: 0.1vmin solid black;
 }
 input[type=text].controls:focus{
     outline: none;
@@ -67,38 +79,41 @@ input[type=text].controls:focus{
 
 input[type=range].controls {
     -webkit-appearance: none;
-    width: 100px;
+    width: 15vmin;
     vertical-align: middle;
-    margin: 7px 0;
+    margin: 1.4vmin 0;
 }
 input[type=range].controls:focus {
+    -webkit-appearance: none;
     outline: none;
 }
 input[type=range].controls::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
     width: 100%;
-    height: 15px;
+    height: 3vmin;
     cursor: pointer;
     background: #000000;
     border-radius: 0px;
-    border: 7px solid white;
+    border: 1.45vmin solid white;
 }
 input[type=range].controls::-webkit-slider-thumb {
     box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
     border: 0px solid rgba(0, 0, 0, 0);
-    height: 15px;
-    width: 2px;
+    height: 3vmin;
+    width: 0.4vmin;
     border-radius: 0px;
     background: #000000;
     cursor: pointer;
     -webkit-appearance: none;
-    margin-top: -7px;
+    margin-top: -1.45vmin;
 }
 input[type=range].controls:focus::-webkit-slider-runnable-track {
+    -webkit-appearance: none;
     outline: none;
 }
 input[type=range].controls::-moz-range-track {
     width: 100%;
-    height: 2px;
+    height: 0.1vmin;
     cursor: pointer;
     box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
     background: #000000;
@@ -108,15 +123,15 @@ input[type=range].controls::-moz-range-track {
 input[type=range].controls::-moz-range-thumb {
     box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
     border: 0px solid rgba(0, 0, 0, 0);
-    height: 15px;
-    width: 2px;
+    height: 3vmin;
+    width: 0.4vmin;
     border-radius: 0px;
     background: #000000;
     cursor: pointer;
 }
 input[type=range].controls::-ms-track {
     width: 100%;
-    height: 2px;
+    height: 0.1vmin;
     cursor: pointer;
     background: transparent;
     border-color: transparent;
@@ -137,12 +152,12 @@ input[type=range].controls::-ms-fill-upper {
 input[type=range].controls::-ms-thumb {
     box-shadow: 0px 0px 0px #000000, 0px 0px 0px #0d0d0d;
     border: 0px solid rgba(0, 0, 0, 0);
-    height: 15px;
-    width: 2px;
+    height: 3vmin;
+    width: 0.4vmin;
     border-radius: 0px;
     background: #000000;
     cursor: pointer;
-    height: 1px;
+    height: 0.2vmin;
 }
 input[type=range].controls:focus::-ms-fill-lower {
     background: greenyellow;

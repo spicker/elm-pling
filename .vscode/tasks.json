@@ -7,7 +7,7 @@
     "args": [
         "src/Pling.elm",
         "--output",
-        "js/elm.js"
+        "build/js/elm.js"
     ],
     "showOutput": "always"
 }

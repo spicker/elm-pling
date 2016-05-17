@@ -7848,7 +7848,7 @@ var _user$project$Pling$init = function () {
 			false),
 		bpm: '80',
 		currentCol: 0,
-		playing: false,
+		playing: true,
 		volume: '1'
 	};
 	return {ctor: '_Tuple2', _0: model, _1: _elm_lang$core$Platform_Cmd$none};
@@ -8094,12 +8094,7 @@ var _user$project$Pling$view = function (model) {
 };
 var _user$project$Pling$main = {
 	main: _elm_lang$html$Html_App$program(
-		{
-			init: _user$project$Pling$init,
-			update: _user$project$Pling$update,
-			view: _elm_lang$html$Html_Lazy$lazy(_user$project$Pling$view),
-			subscriptions: _user$project$Pling$subscriptions
-		})
+		{init: _user$project$Pling$init, update: _user$project$Pling$update, view: _user$project$Pling$view, subscriptions: _user$project$Pling$subscriptions})
 };
 
 var Elm = {};

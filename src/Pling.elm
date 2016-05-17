@@ -21,7 +21,7 @@ main =
     Html.App.program 
         { init = init
         , update = update
-        , view = lazy view
+        , view =  view
         , subscriptions = subscriptions }
 
 
@@ -34,9 +34,6 @@ type alias Model =
     , volume : String }
 
 
-type alias Tone = Int
-
-
 init : (Model, Cmd Msg)
 init = 
     let 
@@ -44,7 +41,7 @@ init =
             { matrix = repeat (8,8) False 
             , bpm = "80" 
             , currentCol = 0
-            , playing = False 
+            , playing = True 
             , volume = "1" }
     in  
         ( model
@@ -70,7 +67,9 @@ update msg model =
             
         UpdatePlay time ->
             ( { model | currentCol = next model.currentCol }
-            , playNotes <| encode 0 <| play model )
+            , play model
+                |> encode 0
+                |> playNotes )
              
         IsPlaying bool ->
             ( { model | playing = bool }

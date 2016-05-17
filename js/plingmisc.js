@@ -4,6 +4,7 @@ var app = Elm.Pling.fullscreen();
 var context = null;
 var buffers = [];
 var gain;
+var compressor;
 var playing = false;
 window.addEventListener('load', init, false);
 
@@ -19,7 +20,12 @@ function init() {
     
     gain = context.createGain();
     gain.value = 1;
-    gain.connect(context.destination);
+    
+    compressor = context.createDynamicsCompressor();
+    
+    gain.connect(compressor);
+    compressor.connect(context.destination);
+
     loadBuffers();
 }
 
@@ -60,7 +66,7 @@ app.ports.playNotes.subscribe(function (json) {
     
     for (var i = 0; i < obj.length; i++) {
         var tone = buffers[obj[i].tone];
-        playSound(tone,0);
+        playSound(tone,context.currentTime);
     }
 });
 

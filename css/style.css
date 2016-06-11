@@ -12,6 +12,10 @@ button.btn {
     margin: 0vmin;
 }
 
+button:focus {
+    outline: none
+}
+
 button.btn:hover {
     background: greenyellow;
 }

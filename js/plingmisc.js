@@ -62,8 +62,6 @@ function playSound(buffer, time) {
 
 app.ports.playNotes.subscribe(function (json) {
     var obj = JSON && JSON.parse(json);
-    console.log("" + json);
-    
     for (var i = 0; i < obj.length; i++) {
         var tone = buffers[obj[i].tone];
         playSound(tone,context.currentTime);
@@ -83,5 +81,6 @@ window.addEventListener('touchstart', function() {
 	source.connect(context.destination);
 
 	source.start(0);
+    
 }, false);
 

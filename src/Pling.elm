@@ -8,7 +8,7 @@ import Matrix exposing (..)
 import Time exposing (Time, minute, every)
 import List
 import Json.Encode as Json exposing (Value,object,list,encode,int,float)
-import Platform.Sub exposing (batch,none)
+import Platform.Sub exposing (none)
 import Html.Lazy exposing (lazy)
 import Array exposing (toIndexedList)
 import String exposing (toFloat)
@@ -21,7 +21,7 @@ main =
     Html.App.program 
         { init = init
         , update = update
-        , view =  view
+        , view = lazy view
         , subscriptions = subscriptions }
 
 
@@ -52,7 +52,7 @@ init =
 type Msg = 
     Reset
     | Click Position
-    | UpdatePlay Time
+    | UpdatePlay 
     | IsPlaying Bool
     | Volume String
     | Bpm String
@@ -65,7 +65,7 @@ update msg model =
             ( { model | matrix = toggle position model.matrix }
             , Cmd.none )
             
-        UpdatePlay time ->
+        UpdatePlay  ->
             ( { model | currentCol = next model.currentCol }
             , play model
                 |> encode 0
@@ -174,6 +174,9 @@ view model =
 --SUBSCRIPTIONS
 subscriptions : Model -> Sub Msg
 subscriptions model = 
-    if model.playing then every ((minute/(Result.withDefault 1 <| String.toFloat model.bpm))/2) UpdatePlay else none
+    if model.playing then 
+        every ((minute/(Result.withDefault 1 <| String.toFloat model.bpm))/2) (always UpdatePlay) 
+        
+    else none
         
 
